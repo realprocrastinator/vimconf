@@ -1,0 +1,298 @@
+" (N)Vim Configuration File
+" vim  : place in  $HOME/.vimrc
+" nvim : place in  $HOME/.config/nvim/init.vim
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" General settings
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+"  drop vi support - kept for vim compatibility but not needed for nvim
+set nocompatible
+
+" number of lines at the beginning and end of files checked for file-specific vars
+set modelines=0
+
+" reload files changed outside of Vim not currently modified in Vim (needs
+" below)
+set autoread
+
+" http://stackoverflow.com/questions/2490227/how-does-vims-autoread-work#20418591
+au FocusGained,BufEnter * :silent! !
+
+" use Unicode
+set encoding=utf-8
+
+" errors flash screen rather than emit beep
+set visualbell
+" disable the emit beep and screen flash 
+set t_vb=
+
+"
+" make Backspace work like Delete
+set backspace=indent,eol,start
+"
+" " don't create `filename~` backups
+set nobackup
+"
+" " don't create temp files
+set noswapfile
+"
+" " line numbers and distances
+set relativenumber 
+set number 
+"
+" " number of lines offset when jumping
+set scrolloff=2
+"
+" " Tab key enters 2 spaces
+" " To enter a TAB character when `expandtab` is in effect,
+" " CTRL-v-TAB
+set expandtab tabstop=2 shiftwidth=2 softtabstop=2 
+"
+" " Indent new line the same as the preceding line
+set autoindent
+"
+" " statusline indicates insert or normal mode
+" set showmode showcmd
+"
+" " make scrolling and painting fast
+" " ttyfast kept for vim compatibility but not needed for nvim
+set ttyfast lazyredraw
+"
+" " highlight matching parens, braces, brackets, etc
+set showmatch
+"
+" " http://vim.wikia.com/wiki/Searching
+set hlsearch incsearch ignorecase smartcase
+"
+" " As opposed to `wrap`
+" set nowrap
+set wrap
+
+" " http://vim.wikia.com/wiki/Set_working_directory_to_the_current_file
+set autochdir
+"
+" " open new buffers without saving current modifications (buffer remains
+" open)
+set hidden
+"
+" "
+" http://stackoverflow.com/questions/9511253/how-to-effectively-use-vim-wildmenu
+set wildmenu wildmode=list:longest,full
+"
+" " StatusLine always visible, display full path
+" " http://learnvimscriptthehardway.stevelosh.com/chapters/17.html
+set laststatus=2 statusline=%F
+"
+" " Use system clipboard
+" " http://vim.wikia.com/wiki/Accessing_the_system_clipboard
+" set clipboard=unnamedplus
+"
+" " Show character column
+" highlight ColorColumn ctermbg=DarkBlue
+set colorcolumn=80
+" " CursorLine - sometimes autocmds are not performant; turn off if so
+"
+" " http://vim.wikia.com/wiki/Highlight_current_line
+set cursorline
+" " Searches current directory recursively.
+set path+=**
+" " Copy/paste between vim and other programs.
+set clipboard=unnamedplus   "neovim
+" set clipboard=unnamed          "vim
+
+
+" Normal mode
+highlight CursorLine ctermbg=None
+autocmd InsertEnter * highlight  CursorLine ctermbg=17 ctermfg=None
+autocmd InsertLeave * highlight  CursorLine ctermbg=None ctermfg=None
+autocmd BufRead *py setlocal colorcolumn=0
+
+
+"""""""""""""""""""""""""""""""""""""""""""""
+" Mouse Scrolling
+"""""""""""""""""""""""""""""""""""""""""""""
+set mouse=nicr
+
+
+"""""""""""""""""""""""""""""""""""""""""""""
+" Splits and Tabbed Files
+"""""""""""""""""""""""""""""""""""""""""""""
+set splitbelow splitright
+
+" Remap splits navigation to just CTRL + hjkl
+nnoremap <C-h> <C-w>h
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-l> <C-w>l
+
+" Make adjusing split sizes a bit more friendly
+"noremap <silent> <C-Left> :vertical resize +3<CR>
+"noremap <silent> <C-Right> :vertical resize -3<CR>
+"noremap <silent> <C-Up> :resize +3<CR>
+"noremap <silent> <C-Down> :resize -3<CR>
+
+" Change 2 split windows from vert to horiz or horiz to vert
+map <Leader>th <C-w>t<C-w>H
+map <Leader>tk <C-w>t<C-w>K
+
+" Removes pipes | that act as seperators on splits
+set fillchars+=vert:\|
+
+
+"""""""""""""""""""""""""""""""""""""""""""""
+" NERDTree
+"""""""""""""""""""""""""""""""""""""""""""""
+" Uncomment to autostart the NERDTree
+" autocmd vimenter * NERDTree
+map <C-n> :NERDTreeToggle<CR>
+let g:NERDTreeDirArrowExpandable = '►'
+let g:NERDTreeDirArrowCollapsible = '▼'
+let NERDTreeShowLineNumbers=1
+let NERDTreeShowHidden=1
+let NERDTreeMinimalUI = 1
+let g:NERDTreeWinSize=38
+
+
+"""""""""""""""""""""""""""""""""""""""""""""
+"  Vifm
+"""""""""""""""""""""""""""""""""""""""""""""
+map <Leader>vv :Vifm<CR>
+map <Leader>vs :VsplitVifm<CR>
+map <Leader>sp :SplitVifm<CR>
+map <Leader>dv :DiffVifm<CR>
+map <Leader>tv :TabVifm<CR>
+
+
+"""""""""""""""""""""""""""""""""""""""""""""
+"  VimWiki
+"""""""""""""""""""""""""""""""""""""""""""""
+let g:vimwiki_list = [{'path': '~/vimwiki/',
+                      \ 'syntax': 'markdown', 'ext': 'md'}]
+
+"""""""""""""""""""""""""""""""""""""""""""""
+"  Vim-Instant-Markdown
+"""""""""""""""""""""""""""""""""""""""""""""
+let g:instant_markdown_autostart = 0        " Turns off auto preview
+let g:instant_markdown_browser = "surf"     " Uses surf for preview
+map <Leader>md :InstantMarkdownPreview<CR>  " Preview .md file
+map <Leader>ms :InstantMarkdownStop<CR>     " Kills preview
+
+
+"""""""""""""""""""""""""""""""""""""""""""""
+" Open Termina inside Vim
+"""""""""""""""""""""""""""""""""""""""""""""
+map <Leader>tt :vnew term://fish<CR>
+
+
+"""""""""""""""""""""""""""""""""""""""""""""
+" Other Settings
+"""""""""""""""""""""""""""""""""""""""""""""
+" let g:python_highlight_all = 1
+" let g:pymode_options_colorcolumn = 0 " disable the middle bar in the terminal
+set colorcolumn=0
+
+" au! BufRead,BUfWrite,BufWritePost,BufNewFile *org
+" au BufEnter *.org       call org#SetOrgFileType()
+
+" set guioptions
+" set guioptions-=m   " remove menu bar
+" set guioptions-=T   " remove tool bar
+" set guioptions-=r   " remove right-hand scroll bar
+" set guioptions-=L   " remove left-hand scroll bar
+"
+"""""""""""""""""""""""""""""""""""""""""""""
+" Settings for pathogen -- vim plugin manager
+"""""""""""""""""""""""""""""""""""""""""""""
+" execute pathogen#infect()
+" syntax on
+" filetype plugin indent on  " Required
+
+
+"""""""""""""""""""""""""""""""""""""""""""""
+" Settings for Vundle.vim
+"""""""""""""""""""""""""""""""""""""""""""""
+set nocompatible              " be iMproved, required
+filetype off                  " required
+
+" set the runtime path to include Vundle and initialize
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+
+" alternatively, pass a path where Vundle should install plugins
+call vundle#begin('~/.vim/pack/plugins/')
+
+" " The following are examples of different formats supported.
+" " Keep Plugin commands between vundle#begin/end.
+" " plugin on GitHub repo
+" Plugin 'tpope/vim-fugitive'
+" " plugin from http://vim-scripts.org/vim/scripts.html
+" " Plugin 'L9'
+" " Git plugin not hosted on GitHub
+" Plugin 'git://git.wincent.com/command-t.git'
+" " git repos on your local machine (i.e. when working on your own plugin)
+" Plugin 'file:///home/gmarik/path/to/plugin'
+" " The sparkup vim script is in a subdirectory of this repo called vim.
+" " Pass the path to set the runtimepath properly.
+" Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
+" " Install L9 and avoid a Naming conflict if you've already installed a
+" " different version somewhere else.
+" " Plugin 'ascenator/L9', {'name': 'newL9'}
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""
+" Install Plugin
+"""""""""""""""""""""""""""""""""""""""""""""""
+"{{ The Basics }}
+" let Vundle manage Vundle, required
+Plugin 'VundleVim/Vundle.vim'
+Plugin 'itchyny/lightline.vim'                         " Lightline statusbar
+Plugin 'suan/vim-instant-markdown', {'rtp': 'after'} " Markdown Preview
+Plugin 'frazrepo/vim-rainbow'
+"{{ File Management }}
+Plugin 'vifm/vifm.vim'                               " Vifm
+Plugin 'scrooloose/nerdtree'                         " Nerdtree
+Plugin 'tiagofumo/vim-nerdtree-syntax-highlight'     " Highlighting Nerdtree
+Plugin 'ryanoasis/vim-devicons'                      " Icons for Nerdtree
+"{{ Productivity }}
+Plugin 'vimwiki/vimwiki'                             " VimWiki
+"{{ Syntax Highlighting and Colors }}
+"Plugin 'PotatoesMaster/i3-vim-syntax'               " i3 config highlighting
+Plugin 'kovetskiy/sxhkd-vim'                         " sxhkd highlighting
+Plugin 'vim-python/python-syntax'                    " Python highlighting
+Plugin 'ap/vim-css-color'                            " Color previews for CSS
+"{{ Junegunn Choi Plugins }}
+Plugin 'junegunn/goyo.vim'                           " Distraction-free viewing
+Plugin 'junegunn/limelight.vim'                      " Hyperfocus on a range
+Plugin 'junegunn/vim-emoji'                          " Vim needs emojis!
+
+" " All of your Plugins must be added before the following line
+call vundle#end()            " required
+
+filetype plugin indent on    " required
+" " To ignore plugin indent changes, instead use:
+" "filetype plugin on
+" "
+" " Brief help
+" " :PluginList       - lists configured plugins
+" " :PluginInstall    - installs plugins; append `!` to update or just
+" :PluginUpdate
+" " :PluginSearch foo - searches for foo; append `!` to refresh local cache
+" " :PluginClean      - confirms removal of unused plugins; append `!` to
+" auto-approve removal
+" "
+" " see :h vundle for more details or wiki for FAQ
+" " Put your non-Plugin stuff after this line
+
+
+"""""""""""""""""""""""""""""""""""""""""""""
+" Settings for lightline.vim
+"""""""""""""""""""""""""""""""""""""""""""""
+" display status bar
+set laststatus=2
+
+" color for status bar
+if !has('gui_running')
+  set t_Co=256
+endif
+
